@@ -45,17 +45,6 @@ async function run() {
       });
       res.send(recipesData);
     });
-    // app.patch("recipes/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const updatedData = req.body;
-    //   const recipesData = await recipesCollection.updateOne(
-    //     {
-    //       _id: new ObjectId(id),
-    //     },
-    //     { $set: updatedData }
-    //   );
-    //   res.send(recipesData);
-    // });
 
     app.patch("/recipes/:id", async (req, res) => {
       const id = req.params.id;
@@ -73,14 +62,6 @@ async function run() {
       res.send(result);
     });
 
-    // users
-
-    // app.post("/user", async (req, res) => {
-    //   const user = req.body;
-    //   const result = await userCollection.insertOne(user);
-    //   res.send(result);
-    // });
-
     console.log("You successfully connected to MongoDB!");
   } finally {
   }
@@ -94,6 +75,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-// hrittik0chatterjee
-// RM1Tatj7zpx9dfSz
