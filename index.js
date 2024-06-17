@@ -22,10 +22,10 @@ async function run() {
   try {
     await client.connect();
     const platepalDB = client.db("platepalDB");
-    // const userDB = client.db("userDB");
+    const userDB = client.db("userDB");
     const recipesCollection = platepalDB.collection("recipesCollection");
     const categoriesCollection = platepalDB.collection("categoriesCollection");
-    // const userCollection = userDb.collection("userCollection");
+    const usersCollection = userDB.collection("usersCollection");
 
     // recipes
     app.post("/recipes", async (req, res) => {
@@ -66,6 +66,14 @@ async function run() {
       const result = await recipesCollection.deleteOne({
         _id: new ObjectId(id),
       });
+      res.send(result);
+    });
+
+    // users
+
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
       res.send(result);
     });
 
