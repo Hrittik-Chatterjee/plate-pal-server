@@ -29,21 +29,21 @@ async function run() {
 
     // recipes
     app.post("/recipes", async (req, res) => {
-      const recipesData = req.body;
-      const result = await recipesCollection.insertOne(recipesData);
+      const usersData = req.body;
+      const result = await recipesCollection.insertOne(usersData);
       res.send(result);
     });
     app.get("/recipes", async (req, res) => {
-      const recipesData = recipesCollection.find();
-      const result = await recipesData.toArray();
+      const usersData = recipesCollection.find();
+      const result = await usersData.toArray();
       res.send(result);
     });
     app.get("/recipes/:id", async (req, res) => {
       const id = req.params.id;
-      const recipesData = await recipesCollection.findOne({
+      const usersData = await recipesCollection.findOne({
         _id: new ObjectId(id),
       });
-      res.send(recipesData);
+      res.send(usersData);
     });
 
     app.patch("/recipes/:id", async (req, res) => {
@@ -79,6 +79,11 @@ async function run() {
         return res.send("login successful");
       }
       const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
+    app.get("/users", async (req, res) => {
+      const usersData = usersCollection.find();
+      const result = await usersData.toArray();
       res.send(result);
     });
 
