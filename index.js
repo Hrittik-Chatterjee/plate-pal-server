@@ -73,8 +73,19 @@ async function run() {
 
     app.post("/users", async (req, res) => {
       const user = req.body;
+
+      const userExists = await usersCollection.findOne({ email: user?.email });
+      if (userExists?._id) {
+        return res.send("login successful");
+      }
       const result = await usersCollection.insertOne(user);
       res.send(result);
+    });
+
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const usersData = await usersCollection.findOne({ email: email });
+      res.send(usersData);
     });
 
     console.log("You successfully connected to MongoDB!");
