@@ -61,6 +61,13 @@ async function run() {
       const result = await catergoriesData.toArray();
       res.send(result);
     });
+    app.delete("/recipes/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await recipesCollection.deleteOne({
+        _id: new ObjectId(id),
+      });
+      res.send(result);
+    });
 
     console.log("You successfully connected to MongoDB!");
   } finally {
