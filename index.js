@@ -84,8 +84,8 @@ async function run() {
 
     app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
-      const usersData = await usersCollection.findOne({ email: email });
-      res.send(usersData);
+      const result = await usersCollection.findOne({ email: email });
+      res.send(result);
     });
 
     console.log("You successfully connected to MongoDB!");
