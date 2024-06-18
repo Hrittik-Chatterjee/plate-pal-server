@@ -91,7 +91,7 @@ async function run() {
         return res.send("login successful", token);
       }
       await usersCollection.insertOne(user);
-      res.send(token);
+      res.send({ token });
     });
 
     app.get("/users", async (req, res) => {
