@@ -21,7 +21,7 @@ const createToken = (user) => {
 };
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization.split(1);
+  const token = req.headers.authorization.split(" ")[1];
   const verify = jwt.verify(token, "secret");
   if (!verify?.email) {
     return res.send("you are not authorized");
