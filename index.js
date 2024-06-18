@@ -9,7 +9,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 app.use(cors());
 app.use(express.json());
 
-const createToken = () => {
+const createToken = (user) => {
   const token = jwt.sign(
     {
       email: user.email,
