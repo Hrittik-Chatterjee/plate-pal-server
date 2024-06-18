@@ -93,6 +93,16 @@ async function run() {
       res.send(result);
     });
 
+    app.patch("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const userData = req.body;
+      const result = await userCollection.updateOne(
+        { email },
+        { $set: userData },
+        { upsert: true }
+      );
+      res.send(result);
+    });
     console.log("You successfully connected to MongoDB!");
   } finally {
   }
