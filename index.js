@@ -20,6 +20,16 @@ const createToken = (user) => {
   return token;
 };
 
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization.split(1);
+  const verify = jwt.verify(token, "secret");
+  if (!verify?.email) {
+    return res.send("you are not authorized");
+  }
+  req.user = verify.email;
+  next();
+};
+
 const uri = process.env.DATABASE_URL;
 
 const client = new MongoClient(uri, {
@@ -40,7 +50,7 @@ async function run() {
     const usersCollection = userDB.collection("usersCollection");
 
     // recipes
-    app.post("/recipes", async (req, res) => {
+    app.post("/recipes", verifyToken, async (req, res) => {
       const usersData = req.body;
       const result = await recipesCollection.insertOne(usersData);
       res.send(result);
@@ -58,7 +68,7 @@ async function run() {
       res.send(usersData);
     });
 
-    app.patch("/recipes/:id", async (req, res) => {
+    app.patch("/recipes/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const updatedData = req.body;
       const result = await recipesCollection.updateOne(
@@ -73,7 +83,7 @@ async function run() {
       const result = await catergoriesData.toArray();
       res.send(result);
     });
-    app.delete("/recipes/:id", async (req, res) => {
+    app.delete("/recipes/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const result = await recipesCollection.deleteOne({
         _id: new ObjectId(id),
@@ -83,7 +93,7 @@ async function run() {
 
     // users
 
-    app.post("/users", async (req, res) => {
+    app.post("/users", verifyToken, async (req, res) => {
       const user = req.body;
       const token = createToken(user);
 
