@@ -8,6 +8,17 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 app.use(cors());
 app.use(express.json());
 
+const createToken = () => {
+  const token = jwt.sign(
+    {
+      email: user.email,
+    },
+    "secret",
+    { expiresIn: "7d" }
+  );
+  return token;
+};
+
 const uri = process.env.DATABASE_URL;
 
 const client = new MongoClient(uri, {
@@ -73,14 +84,16 @@ async function run() {
 
     app.post("/users", async (req, res) => {
       const user = req.body;
+      const token = createToken(user);
 
       const userExists = await usersCollection.findOne({ email: user?.email });
       if (userExists?._id) {
-        return res.send("login successful");
+        return res.send("login successful", token);
       }
-      const result = await usersCollection.insertOne(user);
-      res.send(result);
+      await usersCollection.insertOne(user);
+      res.send(token);
     });
+
     app.get("/users", async (req, res) => {
       const usersData = usersCollection.find();
       const result = await usersData.toArray();
